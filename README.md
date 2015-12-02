@@ -1,4 +1,14 @@
 # JsonapiOverhaul
+Testing and example app for JSONAPI for elixir: Phoenix Framework
+
+
+
+## Example of the overhaul branch for:
+
+* Create 
+* Update 
+* Index 
+* Show, with relationships
 
 To start your Phoenix app:
 
