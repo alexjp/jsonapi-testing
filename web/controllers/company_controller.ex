@@ -25,6 +25,11 @@ defmodule JsonapiOverhaul.CompanyController do
         |> render(JsonapiOverhaul.ChangesetView, "error.json", changeset: changeset)
     end
   end
+  def create(conn, _)  do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> render(JsonapiOverhaul.ChangesetView, "error.json", changeset: %{error: "invalid data"})
+  end
 
   def show(conn, %{"id" => id}) do
     company = Repo.get!(Company, id)
@@ -43,6 +48,12 @@ defmodule JsonapiOverhaul.CompanyController do
         |> put_status(:unprocessable_entity)
         |> render(JsonapiOverhaul.ChangesetView, "error.json", changeset: changeset)
     end
+  end
+
+  def update(conn, _)  do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> render(JsonapiOverhaul.ChangesetView, "error.json", changeset: %{error: "invalid data"})
   end
 
   def delete(conn, %{"id" => id}) do

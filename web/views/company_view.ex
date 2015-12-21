@@ -11,8 +11,9 @@ defmodule JsonapiOverhaul.CompanyView do
   end
 
 
-  def fields(), do: [:id, :name]
+  def fields(), do: [:name]
   def type(), do: "company"
-  def includes(), do: []
+  # def includes(), do: [users: {JsonapiOverhaul.UserView, :include}]
+  # def relationships(), do: [users: {JsonapiOverhaul.UserView, :include}]
 
 end

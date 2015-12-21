@@ -2,7 +2,8 @@ defmodule JsonapiOverhaul.CompanyControllerTest do
   use JsonapiOverhaul.ConnCase
 
   alias JsonapiOverhaul.Company
-  @valid_attrs %{}
+  @valid_attrs %{ type: "company", attributes: %{name: "TestCompany"}}
+  @create_valid_attrs %{ type: "companies", attributes: %{name: "TestCompany"}}
   @invalid_attrs %{}
 
   setup do
@@ -18,7 +19,7 @@ defmodule JsonapiOverhaul.CompanyControllerTest do
   test "shows chosen resource", %{conn: conn} do
     company = Repo.insert! %Company{}
     conn = get conn, company_path(conn, :show, company)
-    assert json_response(conn, 200)["data"] == %{"id" => company.id}
+    assert String.to_integer(json_response(conn, 200)["data"]["id"]) == company.id
   end
 
   test "does not show resource and instead throw error when id is nonexistent", %{conn: conn} do
@@ -28,26 +29,26 @@ defmodule JsonapiOverhaul.CompanyControllerTest do
   end
 
   test "creates and renders resource when data is valid", %{conn: conn} do
-    conn = post conn, company_path(conn, :create), company: @valid_attrs
+    conn = post conn, company_path(conn, :create), data: @create_valid_attrs
     assert json_response(conn, 201)["data"]["id"]
-    assert Repo.get_by(Company, @valid_attrs)
+    assert Repo.get_by(Company, @create_valid_attrs.attributes)
   end
 
   test "does not create resource and renders errors when data is invalid", %{conn: conn} do
-    conn = post conn, company_path(conn, :create), company: @invalid_attrs
+    conn = post conn, company_path(conn, :create), data: @invalid_attrs
     assert json_response(conn, 422)["errors"] != %{}
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
     company = Repo.insert! %Company{}
-    conn = put conn, company_path(conn, :update, company), company: @valid_attrs
+    conn = put conn, company_path(conn, :update, company), %{id: company.id, data: @valid_attrs}
     assert json_response(conn, 200)["data"]["id"]
-    assert Repo.get_by(Company, @valid_attrs)
+    assert Repo.get_by(Company, @valid_attrs.attributes)
   end
 
   test "does not update chosen resource and renders errors when data is invalid", %{conn: conn} do
     company = Repo.insert! %Company{}
-    conn = put conn, company_path(conn, :update, company), company: @invalid_attrs
+    conn = put conn, company_path(conn, :update, company), data: @invalid_attrs
     assert json_response(conn, 422)["errors"] != %{}
   end
 

@@ -25,6 +25,11 @@ defmodule JsonapiOverhaul.UserController do
         |> render(JsonapiOverhaul.ChangesetView, "error.json", changeset: changeset)
     end
   end
+  def create(conn, _)  do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> render(JsonapiOverhaul.ChangesetView, "error.json", changeset: %{error: "invalid data"})
+  end
 
   def show(conn, %{"id" => id}) do
     user = Repo.get!(User, id)
@@ -44,6 +49,12 @@ defmodule JsonapiOverhaul.UserController do
         |> put_status(:unprocessable_entity)
         |> render(JsonapiOverhaul.ChangesetView, "error.json", changeset: changeset)
     end
+  end
+
+  def update(conn, _)  do
+    conn
+    |> put_status(:unprocessable_entity)
+    |> render(JsonapiOverhaul.ChangesetView, "error.json", changeset: %{error: "invalid data"})
   end
 
   def delete(conn, %{"id" => id}) do
