@@ -2,6 +2,7 @@ defmodule JsonapiOverhaul.CompanyControllerTest do
   use JsonapiOverhaul.ConnCase
 
   alias JsonapiOverhaul.Company
+  alias JsonapiOverhaul.User
   @valid_attrs %{ type: "company", attributes: %{name: "TestCompany"}}
   @create_valid_attrs %{ type: "companies", attributes: %{name: "TestCompany"}}
   @invalid_attrs %{}
@@ -40,7 +41,8 @@ defmodule JsonapiOverhaul.CompanyControllerTest do
   end
 
   test "updates and renders chosen resource when data is valid", %{conn: conn} do
-    company = Repo.insert! %Company{}
+    company = Repo.insert! %Company{name: "Test"}
+    user = Repo.insert! %User{name: "Test", company_id: company.id}
     conn = put conn, company_path(conn, :update, company), %{id: company.id, data: @valid_attrs}
     assert json_response(conn, 200)["data"]["id"]
     assert Repo.get_by(Company, @valid_attrs.attributes)

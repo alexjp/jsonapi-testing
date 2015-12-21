@@ -2,6 +2,7 @@ defmodule JsonapiOverhaul.UserControllerTest do
   use JsonapiOverhaul.ConnCase
 
   alias JsonapiOverhaul.User
+  alias JsonapiOverhaul.Company
   @valid_attrs %{ type: "user", attributes: %{name: "TestUser"}}
   @create_valid_attrs %{ type: "users", attributes: %{name: "TestUser"}}
   @invalid_attrs %{}
@@ -17,7 +18,8 @@ defmodule JsonapiOverhaul.UserControllerTest do
   end
 
   test "shows chosen resource", %{conn: conn} do
-    user = Repo.insert! %User{}
+    company = Repo.insert! %Company{name: "Test"}
+    user = Repo.insert! %User{name: "Test", company_id: company.id}
     conn = get conn, user_path(conn, :show, user)
     assert String.to_integer(json_response(conn, 200)["data"]["id"]) == user.id
   end

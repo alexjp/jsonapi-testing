@@ -13,6 +13,6 @@ defmodule JsonapiOverhaul.UserView do
 
   def fields(), do: [:name]
   def type(), do: "user"
-  # def includes(), do: [company: {JsonapiOverhaul.CompanyView, :include}]
-  # def relationships(), do: [company: {JsonapiOverhaul.CompanyView, :include}]
+  def includes(), do: [company: {JsonapiOverhaul.CompanyView, :include}]
+  def relationships(), do: [company: JsonapiOverhaul.CompanyView]
 end
